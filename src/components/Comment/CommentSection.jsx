@@ -7,47 +7,77 @@ import CommentForm from './CommentForm'
 // Services
 import { createComment, deleteComment, updateComment } from '../../services/commentService'
 
-
-const CommentSection = (props) => {
-    const [commentArray, setCommentArray] = useState([...props.post.comments])
+const CommentSection = ({
+    currentUser,
+    setPost,
+    post: {
+        _id: postId,
+        comments,
+    }
+}) => {
+    const [comments, setComments] = useState([...comments])
     const [showNewComment, setShowNewComment] = useState(false)
 
+    // formData is too general a name to be very helpful
     const handleCreateComment = async (formData) => {
         try {
-            const response = await createComment(props.post._id, formData)
-            response.commenter = props.currentUser
-            setCommentArray(commentArray => [...commentArray, response])
+            const response = await createComment(postId, formData)
+            // It's strange to see assignment to a response object.
+            // Is the response the db record stripped of
+            // the other axios meta info? If so, rename response to be more
+            // specific to whatever it is
+            response.commenter = currentUser
+            // putting response directly into state suggests that response isn't
+            // the typical 'response' you'd get from axios - misnomer?
+            setComments(comments => [...comments, response])
             setShowNewComment(false)
         } catch (error) {
             throw error
         }
     }
 
-    const handleDeleteComment = async (commentId) => {
+    const handleDeleteComment = async (commentToDeleteId) => {
         try {
-            await deleteComment(props.post._id, commentId)
-            setCommentArray(commentArray.filter(comment => comment._id !== commentId))
+            await deleteComment(postId, commentToDeleteId)
+            const remainingComments = comments.filter(comment =>
+                comment._id !== commentToDeleteId
+            )
+            setComments(remainingComments)
         } catch (error) {
             throw error
         }
     }
 
-    const handleSolution = async (comment) => {
+    // notes on this function:
+            // strange to see a function that updates a comment return a post,
+            // rather than a comment
+
+            // it's better not to add the data type to the name of the variable
+
+            // array.prototype.map creates an array of new elements, implying many
+            // changes to many elements. What you're really doing is changing the properties
+            // of just one element in an array. Using array.prototype.find is better for this use-case
+
+            // You can change the properties of of the object without needing a mapping function
+            // The comment's memory pointer is still inside the original array, so no array manipulation needed
+            // However, react won't treat the changes made to a nested object as a state change. So, just return
+            // a copy of the original array
+    const handleSolution = async ({ _id: solutionCommentId, commenter: user }) => {
         try {
-            const commentId = comment._id
-            const userId = comment.commenter._id
-            const user = comment.commenter
-            const updatedPost = await updateComment(commentId, props.post._id, userId)
-            const updatedCommentArray = updatedPost.comments.map((comment) => {
-                if (comment._id === commentId) {
-                    comment.is_solution = true
-                    comment.commenter = user
-                    return comment
-                }
-                return comment
-            })
-            props.setPost(updatedPost)
-            setCommentArray(updatedCommentArray)
+            const updatedPost = await updateComment(solutionCommentId, postId, user.id)
+            const { comments } = updatedPost
+
+            const solutionComment = comments.find(comment =>
+                comment._id === solutionCommentId
+            )
+
+            if (solutionComment) {
+                solutionComment.is_solution = true
+                solutionComment.commenter = user
+            }
+
+            setComments([...comments])
+            setPost(updatedPost)
         } catch (error) {
             throw error
         }
@@ -57,23 +87,27 @@ const CommentSection = (props) => {
         <div className="comment-section">
 
             <CommentList
-                post={props.post}
-                comments={commentArray}
-                currentUser={props.currentUser}
+                post={post}
+                comments={comments}
+                currentUser={currentUser}
                 handleSolution={handleSolution}
                 handleDeleteComment={handleDeleteComment}
-            ></CommentList>
+            />
 
-            {props.currentUser !== null ? <button onClick={() => setShowNewComment(!showNewComment)}>New Comment</button> : null}
+            { currentUser &&
+                <button
+                    onClick={() => setShowNewComment(!showNewComment)}
+                >
+                    New Comment
+                </button>
+            }
 
-            {showNewComment ?
+            { showNewComment &&
                 <CommentForm
-                    post={props.post}
+                    post={post}
                     handleCreateComment={handleCreateComment}
-                    currentUser={props.currentUser}
-                ></CommentForm>
-                :
-                null
+                    currentUser={currentUser}
+                />
             }
 
         </div>

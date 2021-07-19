@@ -4,24 +4,25 @@ import '../../styles/PostForm.css'
 // Components
 import CodeEditor from '../Code/CodeEditor'
 
-const PostForm = (props) => {
+const PostForm = ({ handleCreatePost, currentUser: { _id: userId }}) => {
     const [question, setQuestion] = useState('')
     const [codeblock, setCodeblock] = useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const formData = {
+        handleCreatePost({
             question: question,
             codeblock: codeblock,
-            added_by: props.currentUser._id,
-        }
-        props.handleCreatePost(formData)
+            added_by: userId,
+        })
     }
 
     return (
-        <form className="post-form" onSubmit={(e) => handleSubmit(e)}>
+        <form
+            className="post-form"
+            onSubmit={(e) => handleSubmit(e)}
+        >
             <label>Create Post</label>
-
             <input
                 required
                 placeholder="question"
@@ -29,9 +30,10 @@ const PostForm = (props) => {
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
             ></input>
-
-            <CodeEditor codeblock={codeblock} setCodeblock={setCodeblock}></CodeEditor>
-
+            <CodeEditor
+                codeblock={codeblock}
+                setCodeblock={setCodeblock}
+            />
             <button>Submit</button>
         </form>
     )

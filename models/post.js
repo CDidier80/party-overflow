@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-
 const commentSchema = new Schema({
     comment_text: {
         type: String,
@@ -15,7 +14,10 @@ const commentSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    commenter: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    commenter: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
 }, { timestamps: true })
 
 
@@ -33,10 +35,11 @@ const postSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    added_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    added_by: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     comments: [commentSchema]
 }, { timestamps: true })
-
-
 
 module.exports = mongoose.model('Post', postSchema)

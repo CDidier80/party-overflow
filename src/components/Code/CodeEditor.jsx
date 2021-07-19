@@ -3,24 +3,24 @@ import Prism from "prismjs"
 import '../../styles/prism.css'
 import '../../styles/CodeEditor.css'
 
-
-const CodeEditor = (props) => {
+const CodeEditor = ({ codeblock, setCodeblock }) => {
 
     useEffect(() => {
         setTimeout(() => Prism.highlightAll(), 0)
-    }, [props.codeblock])
+    }, [codeblock])
 
     return (
         <div className="code-editor">
-
             <pre className="display-field">
                 <code className="language-javascript">
-                    {props.codeblock}
+                    { codeblock }
                 </code>
             </pre>
-
-            <textarea className="input-field" value={props.codeblock} onChange={(e)=>props.setCodeblock(e.target.value)}></textarea>
-
+            <textarea
+                className="input-field"
+                value={codeblock}
+                onChange={(e) => setCodeblock(e.target.value)}
+            ></textarea>
         </div>
     )
 }

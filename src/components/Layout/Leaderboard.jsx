@@ -12,6 +12,8 @@ const Leaderboard = () => {
 
     useEffect(() => {
         let componentMounted = true
+        // weird to see promise syntax where
+        // other functions use async-await
         getTopUsers().then((response) => {
             if (componentMounted) {
                 setUserList(response)
@@ -23,16 +25,14 @@ const Leaderboard = () => {
     return (
         <div className="leaderboard">
             <p>Leaderboard</p>
-            {userList ?
+            { userList &&
                 userList.map((user, index) => (
                     <div key={index} style={{ display: 'flex' }}>
-                        <UserCard user={user}></UserCard>
+                        <UserCard user={user} />
                         <p>Solution Count: {user.solution_count}</p>
                     </div>
                 ))
-                :
-                null
-            }
+                }
         </div>
     )
 }

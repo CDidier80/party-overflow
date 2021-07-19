@@ -1,16 +1,21 @@
 import tokenService from '../services/tokenService'
 const BASE_URL = '/api/posts/'
 
-
 export function search(keyword) {
-    return fetch(`${BASE_URL}questions/search?keyword=${keyword}`, { mode: "cors" })
+    return fetch(
+        `${BASE_URL}questions/search?keyword=${keyword}`,
+        { mode: "cors" }
+    )
         .then(res => res.json())
 }
 
 export function getPostById(id) {
     return fetch(`${BASE_URL}details/${id}`, {
         method: "GET",
-        headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken() },
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': 'Bearer ' + tokenService.getToken()
+        },
     }, { mode: "cors" })
         .then(res => res.json())
 }
@@ -19,7 +24,10 @@ export function getPostById(id) {
 export function getUserPosts(id) {
     return fetch(`${BASE_URL}user/${id}`, {
         method: "GET",
-        headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken() },
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': 'Bearer ' + tokenService.getToken()
+        },
     }, { mode: "cors" })
         .then(res => res.json())
 }
@@ -45,7 +53,10 @@ export function createPost(post) {
 export function updatePost(post) {
     return fetch(`${BASE_URL}${post._id}`, {
         method: "PUT",
-        headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken() },
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': 'Bearer ' + tokenService.getToken()
+        },
         body: JSON.stringify(post) //remove?
     }, { mode: "cors" })
         .then(res => res.json())

@@ -11,28 +11,46 @@ import UserCard from '../misc/UserCard'
 import Codeblock from '../Code/Codeblock'
 import PostInteractions from './PostInteractions'
 
-const PostCard = (props) => {
-    const icon = props.post.is_resolved ? Check : Remove
+const PostCard = ({
+    currentUser,
+    markPostResolved,
+    handleDeletePost,
+    post: {
+        question,
+        is_resolved,
+        codeblock,
+        is_resolved,
+        _id: postId,
+        comments
+    }
+}) => (
+    <div className="post-card">
+        <UserCard user={currentUser} />
+        <p>{ question }</p>
+        { codeblock &&
+            <Codeblock codeblock={codeblock} />
+        }
+        <img
+            src={is_resolved ? Check : Remove}
+            alt="resolution symbol"
+            className="resolution-icon"
+        ></img>
 
-    return (
-        <div className="post-card">
-            <UserCard user={props.currentUser}></UserCard>
-            <p>{props.post.question}</p>
-            {props.post.codeblock ? <Codeblock codeblock={props.post.codeblock}></Codeblock> : null}
-            <img className="resolution-icon" src={icon} alt="resolution symbol"></img>
+        <p>{comments.length} Comments</p>
 
-            <p>{props.post.comments.length} Comments</p>
+        { currentUser &&
+            <Link to={`/post/${postId}`}>
+                View Comments
+            </Link>
+        }
 
-            {props.currentUser ? <Link to={`/post/${props.post._id}`}>View Comments</Link> : null}
-
-            <PostInteractions
-                post={props.post}
-                currentUser={props.currentUser}
-                markPostResolved={props.markPostResolved}
-                handleDeletePost={props.handleDeletePost}
-            ></PostInteractions>
-        </div>
-    )
-}
+        <PostInteractions
+            post={post}
+            currentUser={currentUser}
+            markPostResolved={markPostResolved}
+            handleDeletePost={handleDeletePost}
+        />
+    </div>
+)
 
 export default PostCard

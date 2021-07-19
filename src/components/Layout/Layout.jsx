@@ -5,17 +5,12 @@ import '../../styles/App.css'
 import Leaderboard from '../Layout/Leaderboard'
 import SideMenu from '../Layout/SideMenu'
 
-const Layout = (props) => {
-
-    const { children, currentUser, display, setDisplay } = props
-
-    return (
-        <div className="home-page">
-            <SideMenu display={display} setDisplay={setDisplay} currentUser={currentUser}></SideMenu>
-            {children}
-            <Leaderboard></Leaderboard>
-        </div>
-    )
-}
+const Layout = ({ children, ...rest }) => (
+    <div className="home-page">
+        <SideMenu { ...rest } />
+        { children }
+        <Leaderboard/>
+    </div>
+)
 
 export default Layout

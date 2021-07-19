@@ -2,15 +2,26 @@ import React from 'react'
 import '../../styles/Pagination.css'
 
 
-const Pagination = (props) => {
-
-    return (
+const Pagination = ({ changePage, currentPage, posts}) => (
         <div className="pagination">
             <h3>Recent Posts</h3>
-            {props.currentPage > 0 ? <button value="-1" onClick={(e) => props.changePage(e)}>Back</button> : null}
-            {props.posts.length ? <button value="1" onClick={(e) => props.changePage(e)}>Next</button> : null}
+            { currentPage > 0 &&
+                <button
+                    value="-1"
+                    onClick={(e) => changePage(e)}
+                >
+                    Back
+                </button>
+            }
+            { posts.length &&
+                <button
+                    value="1"
+                    onClick={(e) => changePage(e)}
+                >
+                    Next
+                </button>
+            }
         </div>
     )
-}
 
 export default Pagination

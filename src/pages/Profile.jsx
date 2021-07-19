@@ -13,7 +13,7 @@ const Profile = (props) => {
 
     console.log(userPosts)
 
-    //will fetch data once component mounts
+    // will fetch data once component mounts
     useEffect(() => {
         const fetchUserPosts = async (id) => {
             const response = await getUserPosts(id)
@@ -27,14 +27,12 @@ const Profile = (props) => {
             <img src={avatar} alt="user avatar"></img>
             <p>{handle}</p>
             <div>
-                {userPosts.length ?
+                { userPosts.length &&
                     <PostList
                         posts={userPosts}
-                        markPostResolved={props.markPostResolved}
-                        handleDeletePost={props.handleDeletePost}
-                        currentUser={props.currentUser}
-                    ></PostList>
-                    : null}
+                        { ...props }
+                    />
+                }
             </div>
         </div>
     )

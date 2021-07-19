@@ -1,10 +1,13 @@
 import React from 'react'
 import '../styles/Landing.css'
 
-const Landing = () => {
-
-
-    return (
+// consistent spacing
+// subjective opinion: presentational components look cleaner
+// without { return bla bla } because it implies the pure role of
+// presentation and nothing functional. {  } clutter things up
+// when no variables, functions, etc need to be defined
+const Landing = () =>
+    (
         <div className="landing-page">
             <div className="landing-elements">
                 <div className="logo-container">
@@ -19,6 +22,6 @@ const Landing = () => {
             </div>
         </div>
     )
-}
+
 
 export default Landing

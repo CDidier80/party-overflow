@@ -3,22 +3,15 @@ import React from 'react'
 //Components
 import PostCard from './PostCard'
 
-const PostList = (props) => {
-
-    return (
-        props.posts ?
-            props.posts.map((post, index) => (
-                <PostCard
-                    key={index}
-                    post={post}
-                    markPostResolved={props.markPostResolved}
-                    handleDeletePost={props.handleDeletePost}
-                    currentUser={props.currentUser}
-                />
-            ))
-            :
-            null
-    )
-}
+const PostList = ({ posts, ...props }) => (
+    posts &&
+        posts.map((post, index) => (
+            <PostCard
+                key={index}
+                post={post}
+                { ...props }
+            />
+        ))
+)
 
 export default PostList

@@ -12,7 +12,6 @@ const PostDetails = (props) => {
     const { id } = props.match.params
     const [post, setPost] = useState()
 
-
     useEffect(() => {
         let componentMounted = true
         const fetchUserPosts = async () => {
@@ -26,14 +25,14 @@ const PostDetails = (props) => {
             }
         }
         fetchUserPosts()
+        // not sure, but can you remove these {  } ?
         return () => { componentMounted = false }
     }, [id])
-
 
     return (
         <div className="layout">
 
-            {post ?
+            { post ?
                 <div>
                     <h1>post details</h1>
                     <PostCard
@@ -42,7 +41,11 @@ const PostDetails = (props) => {
                         handleDeletePost={props.handleDeletePost}
                         currentUser={props.currentUser}
                     />
-                    <CommentSection post={post} setPost={setPost} currentUser={props.currentUser}></CommentSection>
+                    <CommentSection
+                        post={post}
+                        setPost={setPost}
+                        currentUser={props.currentUser}
+                    />
                 </div>
                 :
                 <div>Oops</div>

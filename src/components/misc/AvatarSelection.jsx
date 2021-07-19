@@ -2,24 +2,39 @@ import React from 'react'
 import '../../styles/AvatarSelection.css'
 
 
-const AvatarSelection = (props) => {
+const AvatarSelection = ({ handlePopup, formData: { avatar }, handleChange}) => {
+
+    const animalOptions = [
+        { url: 'Wdyo4ow.png', text: 'Cat' },
+        { url: '74imy42.png', text: 'Bear' },
+        { url: '51nVPDR.png', text: 'Monkey' },
+        { url: 'JjgmvrX.png', text: 'Koala' },
+        { url: 'qWHIXp5.png', text: 'Fox' },
+        { url: 'BC8wCCP.png', text: 'Dear' },
+        { url: 'ydToVuJ.png', text: 'Raccoon' },
+        { url: 'ut1szAk.png', text: 'Panda' },
+        { url: 'MULaROr.png', text: 'Wolf' }
+    ]
 
     return (
         <div className="popup">
             <div className="select-menu">
-                <img src={props.formData.avatar} alt="animal-avatar"></img>
-                <select onChange={(e) => props.handleChange(e)} name="avatar" value={props.formData.avatar}>
-                    <option value='https://i.imgur.com/Wdyo4ow.png'>Cat</option>
-                    <option value='https://i.imgur.com/74imy42.png'>Bear</option>
-                    <option value='https://i.imgur.com/51nVPDR.png'>Monkey</option>
-                    <option value='https://i.imgur.com/JjgmvrX.png'>Koala</option>
-                    <option value='https://i.imgur.com/qWHIXp5.png'>Fox</option>
-                    <option value='https://i.imgur.com/BC8wCCP.png'>Dear</option>
-                    <option value='https://i.imgur.com/ydToVuJ.png'>Raccoon</option>
-                    <option value='https://i.imgur.com/ut1szAk.png'>Panda</option>
-                    <option value='https://i.imgur.com/MULaROr.png'>Wolf</option>
+                <img src={avatar} alt="animal-avatar"></img>
+                <select
+                    /* handleChange is too general a name */
+                    onChange={(e) => handleChange(e)}
+                    value={avatar}
+                    name="avatar"
+                >
+                    { animalOptions.map(({ url, text}) => (
+                        <option value={"https://i.imgur.com/" + url}>
+                            { text }
+                        </option>
+                    ))}
                 </select>
-                <button onClick={props.handlePopup}>Confirm</button>
+                <button onClick={handlePopup}>
+                    Confirm
+                </button>
             </div>
         </div>
     )

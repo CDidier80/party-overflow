@@ -1,43 +1,45 @@
 import React, { useState } from 'react'
 import '../../styles/NavBar.css'
 
-
 //Services
 import { search } from '../../services/postService'
 
-const SearchBar = (props) => {
+const SearchBar = ({ setPosts }) => {
   const [keyword, setKeyword] = useState('')
 
   const handleSearch = async (e) => {
-    //search might need page limit at some point
+    // search might need page limit at some point
     e.preventDefault()
     try {
-      const response = await search(keyword)
-      props.setPosts(response.posts)
+      const { posts } = await search(keyword)
+      setPosts(posts)
       setKeyword('')
     } catch (error) {
       throw error
     }
   }
 
-
-  const handleChange = (e) => {
-    setKeyword(e.target.value)
-  }
+  const handleKeywordChange = (e) => setKeyword(e.target.value)
 
   return (
-    <form className="search" onSubmit={handleSearch}>
+    <form
+      onSubmit={handleSearch}
+      className="search"
+    >
       <button type="submit">
-        <img className="search-icon"  src="https://i.imgur.com/iFtGXxX.png" alt="magnifying glass"></img>
+        <img
+          className="search-icon"
+          src="https://i.imgur.com/iFtGXxX.png"
+          alt="magnifying glass"
+        ></img>
       </button>
       <input
-        autoComplete="off"
-        placeholder="Search"
-        name="keyword"
         value={keyword}
-        onChange={handleChange}
+        onChange={handleKeywordChange}
+        placeholder="Search"
+        autoComplete="off"
+        name="keyword"
       ></input>
-
     </form>
   )
 }

@@ -12,7 +12,7 @@ const Codeblock = (props) => {
         <div style={{width: '100%'}}>
             <pre>
                 <code className="language-javascript">
-                    {props.codeblock}
+                    { props.codeblock }
                 </code>
             </pre>
         </div>

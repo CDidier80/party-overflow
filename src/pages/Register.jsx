@@ -22,13 +22,16 @@ const Register = (props) => {
         avatar: 'https://i.imgur.com/Wdyo4ow.png'
     })
 
-    const handleChange = ({ target }) => {
-        setFormData({ ...formData, [target.name]: target.value })
+    // nothing wrong with this technically, but I don't like how in most other
+    // places you use e.target but break that convention here.
+    // It's probably better overall to continue with that pattern.
+    // Or, you could probably justify the pattern deviation on the basis of
+    // improved semantic clarity on line 31. Use nested destructuring...
+    const handleChange = ({ target: { name, value } }) => {
+        setFormData({ ...formData, [name]: value })
     }
 
-    const handlePopup = () => {
-        setPopup(!popup)
-    }
+    const handlePopup = () => setPopup(!popup)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -55,6 +58,7 @@ const Register = (props) => {
                     </div>
 
                     <form name="register" onSubmit={handleSubmit}>
+                        { /* these lines need a haircut more than Chewbacca */ }
                         <input required name="handle" type="text" placeholder="Username" onChange={handleChange} value={formData.handle}></input>
                         <input required name="email" type="email" placeholder="Email" onChange={handleChange} value={formData.email}></input>
                         <input required name="password" type="password" placeholder="Password" onChange={handleChange} value={formData.password}></input>
